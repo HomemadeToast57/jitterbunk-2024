@@ -1,0 +1,36 @@
+{% extends 'bunk/base.html' %}
+
+{% block header %}
+    Jitterbunk Login
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-2">
+                <div class="flex flex-row items-center">
+                    <label for="{{ field.id_for_label }}" class="block text-gray-700 text-sm font-bold ml-2" style="width: 10ch">{{ field.label }}:</label>
+                    <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="border border-gray-300 rounded p-2 w-30">
+                </div>
+            </div>
+        {% endfor %}
+        <div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-[10px]">Login</button>
+            {% comment %} logout {% endcomment %}
+            {% if request.user.is_authenticated %}
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-[10px]">
+                <a href="{% url 'logout' %}">Logout</a>
+            </button>
+            {% endif %}
+        </div>
+    </form>
+    
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
